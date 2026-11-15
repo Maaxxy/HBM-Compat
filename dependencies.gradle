@@ -26,6 +26,23 @@ dependencies {
     // Exercise the real HBM recipe matcher in tests, not a duplicate test implementation.
     testImplementation(rfg.deobf(project.files(hbmJars[0])))
 
+    // Not Enough Characters (NEI pinyin search) is OPTIONAL and client-only: pinyin is an
+    // enhancement, and the mod must keep working without it. Missing libs/nechar-*.jar is
+    // therefore NOT an error (unlike the HBM jar above), and nothing may hard-link to its
+    // API - PinyinBridge resolves it reflectively and falls back to String.contains.
+    // devOnlyNonPublishable is wired by ToolchainModule into compileOnly plus the dev/test
+    // runtime classpath, so it never ships as a published dependency. The released jar is
+    // SRG-named (func_*/field_*), hence rfg.deobf().
+    def necharJars = fileTree(dir: 'libs', include: 'nechar-*.jar').files.toList()
+    if (necharJars.size() > 1) {
+        throw new GradleException(
+            "\n\nMultiple nechar JARs found in libs/: ${necharJars.collect { it.name }.join(', ')}.\n" +
+            "Keep only one nechar jar in libs/ at a time.\n")
+    }
+    if (!necharJars.isEmpty()) {
+        devOnlyNonPublishable(rfg.deobf(project.files(necharJars[0])))
+    }
+
     testImplementation('junit:junit:4.12')
 
 }

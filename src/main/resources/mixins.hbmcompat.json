@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8.5-GTNH",
+  "package": "io.github.hbmcompat.mixins",
+  "refmap": "mixins.hbmcompat.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [],
+  "client": [
+    "HbmPinyinMixins$GenericRecipeMixin",
+    "HbmPinyinMixins$GuiAnvilMixin",
+    "HbmPinyinMixins$GuiMachineAmmoPressMixin",
+    "HbmPinyinMixins$GuiScreenFluidMixin",
+    "HbmPinyinMixins$GuiTransporterLinkerMixin",
+    "HbmPinyinMixins$ContainerPneumoStorageAccessMixin",
+    "HbmPinyinMixins$GuiStructureLoadFilterMixin"
+  ],
+  "server": []
+}

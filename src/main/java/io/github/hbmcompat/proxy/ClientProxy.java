@@ -24,6 +24,12 @@ public final class ClientProxy extends CommonProxy {
     @Override
     public void postInit() {
         io.github.hbmcompat.client.BobFluidDisplayCompat.hideFluidBlocks();
+        // Pinyin search is wired purely through Mixin, so there is nothing to register here.
+        // Logged only because the difference is otherwise invisible: the fallback is plain
+        // String.contains, i.e. exactly vanilla HBM behaviour.
+        io.github.hbmcompat.HbmCompat.LOG.info(io.github.hbmcompat.client.PinyinBridge.isActive()
+                ? "Pinyin search enabled for HBM search boxes (Not Enough Characters found)"
+                : "Not Enough Characters not installed; HBM search boxes use plain text matching");
     }
 
     @Override

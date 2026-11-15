@@ -30,7 +30,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
         dependencies = "required-after:hbm;required-after:NotEnoughItems;"
                 + "required-after:neenergistics@[1.7.38,);"
                 + "required-after:appliedenergistics2@[rv3-beta-1024,);"
-                + "required-after:ae2fc@[1.5.99-gtnh,);after:bobfluidtranslator")
+                + "required-after:ae2fc@[1.5.99-gtnh,);after:bobfluidtranslator;after:nechar")
 public final class HbmCompat {
 
     @Mod.Instance("hbmcompat")

@@ -11,7 +11,9 @@ run/
 
 # HBM Nuclear Tech Mod is a dev-only compile dependency and is NOT redistributed here.
 # Drop your own copy of HBM-NTM-*.jar into libs/ before building -- see README.md.
-libs/*.jar
+# The trailing * also catches temporarily renamed jars (e.g. *.jar.disabled used to
+# toggle an optional dev dependency without deleting the file).
+libs/*.jar*
 
 # IDE
 .idea/
