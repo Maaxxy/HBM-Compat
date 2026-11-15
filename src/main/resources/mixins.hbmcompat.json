@@ -6,14 +6,6 @@
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [],
-  "client": [
-    "HbmPinyinMixins$GenericRecipeMixin",
-    "HbmPinyinMixins$GuiAnvilMixin",
-    "HbmPinyinMixins$GuiMachineAmmoPressMixin",
-    "HbmPinyinMixins$GuiScreenFluidMixin",
-    "HbmPinyinMixins$GuiTransporterLinkerMixin",
-    "HbmPinyinMixins$ContainerPneumoStorageAccessMixin",
-    "HbmPinyinMixins$GuiStructureLoadFilterMixin"
-  ],
+  "client": [],
   "server": []
 }
