@@ -12,6 +12,10 @@ public interface IHbmMachineDriver {
 
     HbmRecipeMatch match(ICraftingPatternDetails details);
 
+    default HbmRecipeMatch match(TileEntity tile, ICraftingPatternDetails details) {
+        return match(details);
+    }
+
     boolean isBusy(TileEntity tile);
 
     default boolean isBusy(TileEntity tile, FeedingMode mode) {

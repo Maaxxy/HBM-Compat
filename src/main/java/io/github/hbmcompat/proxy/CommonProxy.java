@@ -13,6 +13,9 @@ public class CommonProxy {
     public Object createAdapterGui(net.minecraft.entity.player.InventoryPlayer player,
             io.github.hbmcompat.ae2.TileHbmAdapter tile) { return null; }
 
+    public Object createAnvilGui(net.minecraft.entity.player.InventoryPlayer player,
+            io.github.hbmcompat.ae2.TileModularAnvil tile) { return null; }
+
     public void receiveFactoryState(io.github.hbmcompat.network.FactoryModeNetwork.State state) {}
 
     public void postInit() {}

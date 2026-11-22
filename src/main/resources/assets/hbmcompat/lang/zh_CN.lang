@@ -68,3 +68,7 @@ hbmcompat.debug.line=[HBMC 调试] [%s 维度=%s 坐标=%s] %s
 hbmcompat.debug.source.push=样板适配器
 hbmcompat.debug.source.bus:fluid-import=流体输入总线
 hbmcompat.debug.source.bus:export=流体输出总线
+hbmcompat.anvil.module=砧
+hbmcompat.anvil.tier=%s 级
+hbmcompat.anvil.pattern=样板
+tile.modular_anvil.name=模块化砧

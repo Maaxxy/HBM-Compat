@@ -224,7 +224,7 @@ public final class HbmDuality extends DualityInterface {
                 continue;
             }
 
-            HbmRecipeMatch match = driver.match(patternDetails);
+            HbmRecipeMatch match = driver.match(target, patternDetails);
             if (match == null) {
                 if (diagnose) {
                     rejection = DiagnosticMessage.of(
@@ -316,11 +316,12 @@ public final class HbmDuality extends DualityInterface {
     private HbmRecipeMatch matchForCurrentTarget(ICraftingPatternDetails details) {
         HbmRecipeMatch result = null;
         for (ForgeDirection direction : host.getTargets()) {
-            IHbmMachineDriver driver = HbmMachineDrivers.forTile(target(direction));
+            TileEntity target = target(direction);
+            IHbmMachineDriver driver = HbmMachineDrivers.forTile(target);
             if (driver == null) {
                 continue;
             }
-            HbmRecipeMatch match = driver.match(details);
+            HbmRecipeMatch match = driver.match(target, details);
             if (match != null) {
                 if (result != null) {
                     return null;

@@ -12,9 +12,19 @@ import io.github.hbmcompat.HbmCompat;
 
 public final class AdapterGuiHandler implements IGuiHandler {
     private static final int ADAPTER = 0;
+    private static final int ANVIL = 1;
 
     public static void open(EntityPlayer player, TileHbmAdapter tile) {
         player.openGui(HbmCompat.instance, ADAPTER, tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
+    }
+
+    public static void open(EntityPlayer player, TileModularAnvil tile) {
+        player.openGui(HbmCompat.instance, ANVIL, tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
+    }
+
+    private TileModularAnvil anvil(World world, int x, int y, int z) {
+        TileEntity tile = world.blockExists(x, y, z) ? world.getTileEntity(x, y, z) : null;
+        return tile instanceof TileModularAnvil ? (TileModularAnvil) tile : null;
     }
 
     private TileHbmAdapter tile(int id, World world, int x, int y, int z) {
@@ -24,6 +34,10 @@ public final class AdapterGuiHandler implements IGuiHandler {
     }
 
     @Override public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+        if (id == ANVIL) {
+            TileModularAnvil tile = anvil(world, x, y, z);
+            return tile != null && tile.isUseableByPlayer(player) ? new ContainerModularAnvil(player.inventory, tile) : null;
+        }
         TileHbmAdapter tile = tile(id, world, x, y, z);
         if (tile == null || !GuiBridge.GUI_INTERFACE.hasPermissions(
                 tile, x, y, z, ForgeDirection.UNKNOWN, player)) return null;
@@ -37,6 +51,10 @@ public final class AdapterGuiHandler implements IGuiHandler {
     }
 
     @Override public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+        if (id == ANVIL) {
+            TileModularAnvil tile = anvil(world, x, y, z);
+            return tile == null ? null : HbmCompat.proxy.createAnvilGui(player.inventory, tile);
+        }
         TileHbmAdapter tile = tile(id, world, x, y, z);
         return tile == null ? null : HbmCompat.proxy.createAdapterGui(player.inventory, tile);
     }

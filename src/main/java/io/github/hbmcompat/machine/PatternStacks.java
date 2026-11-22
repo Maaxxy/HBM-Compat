@@ -12,6 +12,7 @@ import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
+import appeng.util.item.AEItemStack;
 import appeng.util.inv.MEInventoryCrafting;
 
 public final class PatternStacks {
@@ -35,14 +36,19 @@ public final class PatternStacks {
     }
 
     public static PatternStacks fromInventory(InventoryCrafting inventory) {
-        if (!(inventory instanceof MEInventoryCrafting)) {
+        return fromInventory(inventory, false);
+    }
+
+    public static PatternStacks fromInventory(InventoryCrafting inventory, boolean allowItemInventory) {
+        if (!(inventory instanceof MEInventoryCrafting) && !allowItemInventory) {
             return new PatternStacks(new ArrayList<ItemStack>(), new ArrayList<FluidStack>(), false);
         }
 
-        MEInventoryCrafting meInventory = (MEInventoryCrafting) inventory;
         IAEStack<?>[] stacks = new IAEStack<?>[inventory.getSizeInventory()];
         for (int slot = 0; slot < stacks.length; slot++) {
-            stacks[slot] = meInventory.getAEStackInSlot(slot);
+            stacks[slot] = inventory instanceof MEInventoryCrafting
+                    ? ((MEInventoryCrafting) inventory).getAEStackInSlot(slot)
+                    : AEItemStack.create(inventory.getStackInSlot(slot));
         }
         return fromAEStacks(stacks);
     }

@@ -9,10 +9,12 @@ import appeng.block.AEBaseItemBlock;
 import cpw.mods.fml.common.registry.GameRegistry;
 import io.github.hbmcompat.HbmCompat;
 import io.github.hbmcompat.ae2.TileHbmAdapter;
+import io.github.hbmcompat.ae2.TileModularAnvil;
 
 public final class ModContent {
 
     public static BlockHbmProcessingAdapter processingAdapter;
+    public static BlockModularAnvil modularAnvil;
     public static ItemHbmFluidImportBus fluidImportBus;
     public static ItemHbmFluidExportBus fluidExportBus;
     public static ItemAutoExtractCard autoExtractCard;
@@ -34,6 +36,11 @@ public final class ModContent {
                 TileHbmAdapter.class,
                 HbmCompat.MODID + "." + BlockHbmProcessingAdapter.REGISTRY_NAME);
 
+        modularAnvil = new BlockModularAnvil();
+        modularAnvil.setCreativeTab(CreativeTabs.tabRedstone);
+        GameRegistry.registerBlock(modularAnvil, AEBaseItemBlock.class, BlockModularAnvil.REGISTRY_NAME);
+        GameRegistry.registerTileEntity(TileModularAnvil.class, HbmCompat.MODID + "." + BlockModularAnvil.REGISTRY_NAME);
+
         fluidImportBus = new ItemHbmFluidImportBus();
         fluidImportBus.setCreativeTab(CreativeTabs.tabRedstone);
         GameRegistry.registerItem(fluidImportBus, ItemHbmFluidImportBus.REGISTRY_NAME, HbmCompat.MODID);
@@ -47,6 +54,7 @@ public final class ModContent {
         registerBusUpgrades(new ItemStack(fluidImportBus));
         registerBusUpgrades(new ItemStack(fluidExportBus));
         registerAdapterUpgrades(new ItemStack(processingAdapter));
+        Upgrades.SPEED.registerItem(new ItemStack(modularAnvil), TileModularAnvil.UPGRADE_SLOTS);
         ModRecipes.init();
 
         // AE2's InterfaceTerminalRegistry only seeds its own TileInterface/PartInterface/PartP2PInterface, and the

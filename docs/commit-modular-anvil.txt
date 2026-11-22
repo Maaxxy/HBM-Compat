@@ -1,0 +1,16 @@
+feat: add modular anvil
+
+Add an AE2 crafting-machine block that runs HBM anvil recipes from a
+processing pattern, using the anvil placed in its module slot as the tier.
+
+- ModularAnvilRecipe matches construction and plain smithing recipes by
+  exact inputs; special smithing (heat/NBT/molds) is excluded.
+- Probabilistic NEI anvil outputs no longer block pattern encoding: only
+  guaranteed outputs are extracted. Chance byproducts still roll as in HBM.
+- Products return to the pushing side: interface, adapter, or the anvil's
+  own output slots when encoded locally. Speed cards supported.
+- IHbmMachineDriver#match now receives the target tile so a driver can
+  resolve the tier per machine; existing drivers keep the old overload.
+
+Also adds the block, GUI, container, world renderer, recipe and lang
+entries.

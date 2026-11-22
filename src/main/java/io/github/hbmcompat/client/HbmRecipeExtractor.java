@@ -11,6 +11,10 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
+import com.hbm.handler.nei.AnvilRecipeHandler;
+import com.hbm.inventory.recipes.anvil.AnvilRecipes.AnvilConstructionRecipe;
+import com.hbm.inventory.recipes.anvil.AnvilRecipes.AnvilOutput;
+
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.IRecipeHandler;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -44,7 +48,7 @@ final class HbmRecipeExtractor {
 
         Object cachedRecipe = template.arecipes.get(recipeIndex);
         try {
-            String probabilityError = validateDeterministicOutputs(handler, cachedRecipe, recipeIndex);
+            String probabilityError = validateDeterministicOutputs(handler, cachedRecipe);
             if (probabilityError != null) {
                 return ExtractionResult.failure(probabilityError);
             }
@@ -55,6 +59,10 @@ final class HbmRecipeExtractor {
             List<PositionedStack> outputs = readPositionedStacks(
                     cachedRecipe,
                     specialSchema == null ? new String[] { "output" } : specialSchema.outputFields);
+            if (handler instanceof AnvilRecipeHandler) {
+                outputs = guaranteedAnvilOutputs((AnvilRecipeHandler) handler, recipeIndex, outputs);
+                if (outputs.isEmpty()) return ExtractionResult.failure("anvil recipe has no guaranteed outputs");
+            }
 
             if (inputs.isEmpty() || outputs.isEmpty()) {
                 return ExtractionResult.failure("recipe has no input or output");
@@ -83,7 +91,20 @@ final class HbmRecipeExtractor {
         }
     }
 
-    private String validateDeterministicOutputs(IRecipeHandler handler, Object cachedRecipe, int recipeIndex)
+    private static List<PositionedStack> guaranteedAnvilOutputs(AnvilRecipeHandler handler, int index,
+            List<PositionedStack> positioned) {
+        AnvilConstructionRecipe recipe = handler.getConstructionRecipe(index);
+        List<PositionedStack> result = new ArrayList<>();
+        for (int slot = 0; slot < recipe.output.size(); slot++) {
+            AnvilOutput output = recipe.output.get(slot);
+            if (!(output.chance >= 1F)) continue;
+            PositionedStack position = positioned.get(slot);
+            result.add(new PositionedStack(output.stack.copy(), position.relx, position.rely, false));
+        }
+        return result;
+    }
+
+    private String validateDeterministicOutputs(IRecipeHandler handler, Object cachedRecipe)
             throws ReflectiveOperationException {
         if (inherits(handler, GENERIC_HANDLER)) {
             Object recipe = readField(cachedRecipe, "recipe");
@@ -105,16 +126,6 @@ final class HbmRecipeExtractor {
                         }
                     } else if (invokeBoolean(output, "possibleMultiOutput") || invoke(output, "getSingle") == null) {
                         return "non-deterministic item outputs are not supported";
-                    }
-                }
-            }
-        } else if (inherits(handler, ANVIL_HANDLER)) {
-            Object recipe = readField(cachedRecipe, "recipe");
-            Object outputs = recipe == null ? null : readField(recipe, "output");
-            if (outputs instanceof Iterable<?>) {
-                for (Object output : (Iterable<?>) outputs) {
-                    if (numberField(output, "chance") < 1F) {
-                        return "probabilistic anvil outputs are not supported";
                     }
                 }
             }

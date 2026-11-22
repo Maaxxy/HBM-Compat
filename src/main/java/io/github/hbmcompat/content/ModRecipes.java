@@ -49,6 +49,16 @@ public final class ModRecipes {
         final ItemStack emptyFluidTank = new ItemStack(ModItems.fluid_tank_empty);
         final Item ironIngot = Items.iron_ingot;
 
+        addRecipe(
+                new ItemStack(ModContent.modularAnvil),
+                BlockModularAnvil.REGISTRY_NAME,
+                "III",
+                "CAC",
+                "III",
+                'I', ironIngot,
+                'C', analogCircuit,
+                'A', AEApi.instance().definitions().blocks().molecularAssembler().maybeStack(1).orNull());
+
         // dyeBlue  annihilationCore  dyeBlue
         // iron     emptyTank         iron
         addRecipe(

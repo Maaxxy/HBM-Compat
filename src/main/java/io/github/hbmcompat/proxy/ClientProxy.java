@@ -2,6 +2,7 @@ package io.github.hbmcompat.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
 
+import io.github.hbmcompat.client.GuiModularAnvil;
 import io.github.hbmcompat.client.HbmBlockingButtonHider;
 import io.github.hbmcompat.client.HbmFluidTextureHandler;
 import io.github.hbmcompat.client.HbmPatternTooltipHandler;
@@ -13,6 +14,12 @@ public final class ClientProxy extends CommonProxy {
     public Object createAdapterGui(net.minecraft.entity.player.InventoryPlayer player,
             io.github.hbmcompat.ae2.TileHbmAdapter tile) {
         return new io.github.hbmcompat.client.GuiHbmAdapter(player, tile);
+    }
+
+    @Override
+    public Object createAnvilGui(net.minecraft.entity.player.InventoryPlayer player,
+            io.github.hbmcompat.ae2.TileModularAnvil tile) {
+        return new GuiModularAnvil(player, tile);
     }
 
     @Override
@@ -40,6 +47,7 @@ public final class ClientProxy extends CommonProxy {
     @Override
     public void init() {
         super.init();
+        GuiModularAnvil.registerNeiExclusion();
         HbmProcessorInstaller installer = new HbmProcessorInstaller();
         installer.installInitialProcessor();
         MinecraftForge.EVENT_BUS.register(installer);

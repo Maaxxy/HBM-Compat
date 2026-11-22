@@ -3,6 +3,9 @@
 build/
 out/
 
+# IDE build output (Eclipse/VS Code Java). Mirrors build/, which is already ignored.
+bin/
+
 # The Gradle wrapper jar MUST stay tracked, or ./gradlew will not work on a fresh clone.
 !gradle/wrapper/gradle-wrapper.jar
 

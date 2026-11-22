@@ -1,4 +1,8 @@
 tile.me_hbm_processing_adapter.name=ME-HBM Processing Adapter
+tile.modular_anvil.name=Modular Anvil
+hbmcompat.anvil.module=Anvil
+hbmcompat.anvil.tier=Tier %s
+hbmcompat.anvil.pattern=Pattern
 item.hbm_fluid_import_bus.name=ME HBM Fluid Import Bus
 item.hbm_fluid_export_bus.name=ME HBM Fluid Export Bus
 tooltip.hbmcompat.hbm_machine=HBM machine: %s
